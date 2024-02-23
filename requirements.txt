@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+alembic
+pytest
+python-dotenv
+python-jose[cryptography] ## for: jwt token
+bcrypt
+pydantic[email]
