@@ -6,3 +6,4 @@ python-dotenv
 python-jose[cryptography] ## for: jwt token
 bcrypt
 pydantic[email]
+SQLAlchemy
