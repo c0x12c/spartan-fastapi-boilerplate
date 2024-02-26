@@ -2,7 +2,7 @@
 from __future__ import annotations
 import abc
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.orm.session import Session
 
 
@@ -37,7 +37,7 @@ DEFAULT_SESSION_FACTORY = sessionmaker(
 
 class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
     def __init__(self, session_factory=DEFAULT_SESSION_FACTORY):
-        self.session_factory = session_factory
+        self.session_factory = scoped_session(session_factory)
 
     def __enter__(self):
         self.session = self.session_factory()  # type: Session
@@ -46,7 +46,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
 
     def __exit__(self, *args):
         super().__exit__(*args)
-        self.session.close()
+        self.session_factory.remove()
 
     def commit(self):
         self.session.commit()
